@@ -1574,13 +1574,7 @@ static void Play_Intro(bool for_real)
     bool playright = !Keyboard->Down(KN_LCTRL) || !Keyboard->Down(KN_RCTRL);
     static int _counter = -1;
     static char* _names[] = {
-#ifdef DEMO
-        "LOGO",
-
-#else
-
         "INTRO2",
-        //#ifdef CHEAT_KEYS
         "GDIEND1",
         "GDIEND2",
         "GDIFINA",
@@ -1681,13 +1675,15 @@ static void Play_Intro(bool for_real)
         "TRTKIL_D",
         "TURTKILL",
         "VISOR",
-//#endif
-#endif
-        NULL};
+        NULL,
+    };
 
+    GameType current = GameToPlay;
     Keyboard->Clear();
+    GameToPlay = GAME_NORMAL;
     if (for_real) {
         Hide_Mouse();
+        Play_Movie("WESTLOGO", THEME_NONE, false);
         Play_Movie("LOGO", THEME_NONE, false);
         Show_Mouse();
     } else {
@@ -1706,6 +1702,8 @@ static void Play_Intro(bool for_real)
             _counter = -1;
         }
     }
+
+    GameToPlay = current;
 #endif
 }
 
