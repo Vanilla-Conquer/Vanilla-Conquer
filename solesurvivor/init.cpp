@@ -733,18 +733,12 @@ bool Select_Game(bool fade)
     enum
     {
         SEL_TIMEOUT = -1, // main menu timeout--go into attract mode
-#ifdef NEWMENU
-        SEL_NEW_SCENARIO, // Expansion scenario to play.
-#endif
-        SEL_START_NEW_GAME, // start a new game
-#ifdef BONUS_MISSIONS
-        SEL_BONUS_MISSIONS,
-#endif                        // BONUS_MISSIONS
-        SEL_LOAD_MISSION,     // load a saved game
-        SEL_MULTIPLAYER_GAME, // play modem/null-modem/network game
-        SEL_INTRO,            // replay the intro
+        SEL_PRACTICE, // Expansion scenario to play.
+        SEL_PLAYONLINE, // start a new game
+        SEL_HELP,     // load a saved game
+        SEL_SNEEKPEEK, // play modem/null-modem/network game
+        SEL_LADDER,            // replay the intro
         SEL_EXIT,             // exit to DOS
-        SEL_FAME,             // view the hall of fame
         SEL_NONE,             // placeholder default value
     };
     bool gameloaded = false; // Has the game been loaded from the menu?
@@ -811,7 +805,7 @@ bool Select_Game(bool fade)
     if (GameToPlay == GAME_NORMAL) {
         selection = SEL_NONE;
     } else {
-        selection = SEL_MULTIPLAYER_GAME;
+        selection = SEL_SNEEKPEEK;
     }
 
     /*
@@ -874,9 +868,9 @@ bool Select_Game(bool fade)
                 Fancy_Text_Print("%s",
                                  SeenBuff.Get_Width() - 1,
                                  SeenBuff.Get_Height() - 10,
-                                 GREEN,
+                                 CC_GREEN,
                                  TBLACK,
-                                 TPF_6POINT | TPF_FULLSHADOW | TPF_RIGHT,
+                                 TPF_6POINT | TPF_FULLSHADOW | TPF_USE_GRAD_PAL | TPF_RIGHT | TPF_MEDIUM_COLOR,
                                  VersionText);
 
                 display = false;
@@ -891,7 +885,7 @@ bool Select_Game(bool fade)
             **	Display menu and fetch selection from player.
             */
             if (Special.IsFromInstall) {
-                selection = SEL_START_NEW_GAME;
+                selection = SEL_PLAYONLINE;
                 Theme.Queue_Song(THEME_NONE);
             }
 
@@ -908,7 +902,7 @@ bool Select_Game(bool fade)
             /*
             **	Pick an expansion scenario.
             */
-            case SEL_NEW_SCENARIO:
+            case SEL_PRACTICE:
                 CarryOverMoney = 0;
                 if (Expansion_Dialog()) {
                     switch (Fetch_Difficulty()) {
@@ -989,7 +983,7 @@ bool Select_Game(bool fade)
             /*
             **	SEL_START_NEW_GAME: Play the game
             */
-            case SEL_START_NEW_GAME:
+            case SEL_PLAYONLINE:
                 if (Special.IsFromInstall) {
                     ScenCDifficulty = DIFF_NORMAL;
                     ScenDifficulty = DIFF_NORMAL;
@@ -1070,7 +1064,7 @@ bool Select_Game(bool fade)
             /*
             **	Load a saved game.
             */
-            case SEL_LOAD_MISSION:
+            case SEL_HELP:
                 if (LoadOptionsClass(LoadOptionsClass::LOAD).Process()) {
                     // Theme.Fade_Out();
                     process = false;
@@ -1085,7 +1079,7 @@ bool Select_Game(bool fade)
             **	SEL_MULTIPLAYER_GAME: set 'GameToPlay' to NULL-modem, modem, or
             **	network play.
             */
-            case SEL_MULTIPLAYER_GAME:
+            case SEL_SNEEKPEEK:
 
 #ifdef DEMO
                 Hide_Mouse();
@@ -1236,7 +1230,7 @@ bool Select_Game(bool fade)
             /*
             **	Play a VQ
             */
-            case SEL_INTRO:
+            case SEL_LADDER:
                 Theme.Fade_Out();
                 Theme.Stop();
                 Call_Back();
@@ -1338,12 +1332,6 @@ bool Select_Game(bool fade)
                 VisiblePage.Clear();
 #endif
                 return (false);
-
-            /*
-            **	Display the hall of fame.
-            */
-            case SEL_FAME:
-                break;
 
             case SEL_TIMEOUT:
                 if (AllowAttract && RecordFile.Is_Available()) {
@@ -1477,7 +1465,7 @@ bool Select_Game(bool fade)
         */
         Hide_Mouse();
 
-        if (selection != SEL_START_NEW_GAME) {
+        if (selection != SEL_PLAYONLINE) {
             Fade_Palette_To(BlackPalette, FADE_PALETTE_MEDIUM, Call_Back);
             HiddenPage.Clear();
             VisiblePage.Clear();
