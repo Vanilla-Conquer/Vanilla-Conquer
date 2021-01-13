@@ -63,6 +63,7 @@ set(COMMON_SRC
     packet.cpp
     palette.cpp
     palettec.cpp
+    paths.cpp
     pipe.cpp
     pk.cpp
     pkpipe.cpp
@@ -98,9 +99,9 @@ set(COMMON_SRC
 )
 
 if (WIN32)
-    list(APPEND COMMON_SRC file_win.cpp)
+    list(APPEND COMMON_SRC file_win.cpp paths_win.cpp)
 else()
-    list(APPEND COMMON_SRC file_posix.cpp)
+    list(APPEND COMMON_SRC file_posix.cpp paths_posix.cpp)
 endif()
 
 set(COMMONR_SRC
