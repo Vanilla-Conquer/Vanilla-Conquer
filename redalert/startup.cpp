@@ -293,6 +293,7 @@ int main(int argc, char* argv[])
         ////////////////////////////////////////
 #else
         PathsClass::Instance().Init("vanillara", CONFIG_FILE_NAME);
+        CDFileClass::Refresh_Search_Drives();
         CCFileClass cfile(CONFIG_FILE_NAME);
 #endif
 

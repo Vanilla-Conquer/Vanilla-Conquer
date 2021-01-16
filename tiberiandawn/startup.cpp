@@ -217,6 +217,7 @@ int main(int argc, char** argv)
         WinTimerClass::Init(60);
 
         PathsClass::Instance().Init("vanillatd", "CONQUER.INI");
+        CDFileClass::Refresh_Search_Drives();
         CCFileClass cfile("CONQUER.INI");
 
         Keyboard = new WWKeyboardClass();
