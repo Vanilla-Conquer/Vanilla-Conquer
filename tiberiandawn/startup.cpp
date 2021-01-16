@@ -43,7 +43,7 @@ bool Read_Private_Config_Struct(FileClass& file, NewConfigType* config);
 void Print_Error_End_Exit(char* string);
 void Print_Error_Exit(char* string);
 #ifdef _WIN32
-#include < direct.h>
+#include <direct.h>
 #include "common/utf.h"
 #define vc_chdir(x) _wchdir(UTF8To16(x))
 extern void Create_Main_Window(HANDLE instance, int width, int height);
@@ -216,6 +216,7 @@ int main(int argc, char** argv)
 
         WinTimerClass::Init(60);
 
+        PathsClass::Instance().Init("vanillatd", "CONQUER.INI");
         CCFileClass cfile("CONQUER.INI");
 
         Keyboard = new WWKeyboardClass();

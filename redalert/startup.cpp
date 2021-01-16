@@ -292,6 +292,7 @@ int main(int argc, char* argv[])
         // end of change - 7/18/2019 JAS
         ////////////////////////////////////////
 #else
+        PathsClass::Instance().Init("vanillara", CONFIG_FILE_NAME);
         CCFileClass cfile(CONFIG_FILE_NAME);
 #endif
 
