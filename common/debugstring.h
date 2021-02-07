@@ -23,6 +23,8 @@ void Debug_String_File(const char* file);
 #define Debug_String_File(file)                       ((void)0)
 #endif
 
+int FatalErrorMessageBox(const char* fmt, ...);
+
 /* Default to debug logging */
 #ifndef LOGGING_LEVEL
 #define LOGGING_LEVEL 5
@@ -67,14 +69,21 @@ void Debug_String_File(const char* file);
 #define DBG_ERROR(x, ...) ((void)0)
 #endif
 
+#define _DBG_FATAL_COMMON(x, ...)                                                                                      \
+    do {                                                                                                               \
+        fprintf(stdout, x, ##__VA_ARGS__);                                                                             \
+        FatalErrorMessageBox(x, ##__VA_ARGS__);                                                                        \
+        exit(1);                                                                                                       \
+    } while (false)
+
 #if LOGLEVEL_FATAL <= LOGGING_LEVEL && defined _DEBUG
 #define DBG_FATAL(x, ...)                                                                                              \
     do {                                                                                                               \
         Debug_String_Log(LOGLEVEL_FATAL, __FILE__, __LINE__, x, ##__VA_ARGS__);                                        \
-        exit(1);                                                                                                       \
+        _DBG_FATAL_COMMON(x, ##__VA_ARGS__);                                                                           \
     } while (false)
 #else
-#define DBG_FATAL(x, ...) (exit(1))
+#define DBG_FATAL(x, ...) _DBG_FATAL_COMMON(x, ##__VA_ARGS__)
 #endif
 
 #endif
