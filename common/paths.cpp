@@ -39,21 +39,7 @@ void PathsClass::Init(const char* suffix, const char* ini_name, const char* cmd_
     std::string cwd_path;
 
     if (cmd_arg != nullptr) {
-        // If not absolute, should be relative to the working directory assuming it hasn't been changed yet.
-        if (Is_Absolute(cmd_arg)) {
-            cwd_path = cmd_arg;
-        } else {
-            char* cwd = getcwd(nullptr, 0);
-            if (cwd != nullptr) {
-                cwd_path = cwd;
-
-                cwd_path += cmd_arg;
-                free(cwd);
-            }
-        }
-
-        // Remove exe path.
-        cwd_path = cwd_path.substr(0, cwd_path.find_last_of("\\/"));
+        cwd_path = Argv_Path(cmd_arg);
     }
 
     // Calls with unused returns to set the default variable values if not already set.
@@ -73,7 +59,7 @@ void PathsClass::Init(const char* suffix, const char* ini_name, const char* cmd_
     bool use_program_path = false;
 
     // Check
-    if (RawFileClass((cwd_path + SEP + ini_name).c_str()).Is_Available()) {
+    if (!cwd_path.empty() && RawFileClass((cwd_path + SEP + ini_name).c_str()).Is_Available()) {
         file.Set_Name((cwd_path + SEP + ini_name).c_str());
         use_cwd_path = true;
     } else if (RawFileClass((ProgramPath + SEP + ini_name).c_str()).Is_Available()) {

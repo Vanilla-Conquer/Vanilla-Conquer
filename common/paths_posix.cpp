@@ -176,7 +176,7 @@ void PathsClass::Init_Data_Path()
     DataPath = ProgramPath.substr(0, ProgramPath.find_last_of("/")) + SEP + "share";
 
     if (!Suffix.empty()) {
-        UserPath += SEP + Suffix;
+        DataPath += SEP + Suffix;
     }
 }
 
@@ -223,4 +223,14 @@ bool PathsClass::Create_Directory(const char* dirname)
 bool PathsClass::Is_Absolute(const char* path)
 {
     return path != nullptr && path[0] == '/';
+}
+
+std::string PathsClass::Argv_Path(const char* cmd_arg)
+{
+    char* real_path = realpath(cmd_arg, nullptr);
+    std::string ret = real_path;
+    ret = ret.substr(0, ret.find_last_of("\\/"));
+    free(real_path);
+
+    return ret;
 }

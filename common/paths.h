@@ -47,6 +47,7 @@ private:
     void Init_Program_Path();
     void Init_Data_Path();
     void Init_User_Path();
+    std::string Argv_Path(const char* cmd_arg);
 
 private:
     std::string Suffix;

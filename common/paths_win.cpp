@@ -154,3 +154,27 @@ bool PathsClass::Is_Absolute(const char* path)
 
     return path != nullptr && (path[1] == ':' || (path[0] == '\\' && path[1] == '\\'));
 }
+
+std::string PathsClass::Argv_Path(const char* cmd_arg)
+{
+    wchar_t base_buff[MAX_PATH];
+    wchar_t* buff = base_buff;
+    unsigned len = GetFullPathNameW(UTF8To16(cmd_arg), MAX_PATH, buff, nullptr);
+    std::string ret;
+
+    // If we have a path longer than the standard max path, allocate a buffer of the correct size.
+    if (len >= MAX_PATH) {
+        buff = new wchar_t[len];
+        len = GetFullPathNameW(UTF8To16(cmd_arg), len, buff, nullptr);
+
+        if (len > 0) {
+            ret = UTF16To8(buff);
+        }
+
+        delete[] buff;
+    } else if (len > 0) {
+        ret = UTF16To8(buff);
+    }
+
+    return ret;
+}
