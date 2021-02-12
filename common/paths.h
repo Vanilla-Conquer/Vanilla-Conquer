@@ -29,7 +29,7 @@ public:
     /**
     * @brief Initialise the paths from an ini file to override normal OS defaults.
     */
-    void Init(const char* suffix = nullptr, const char* ini_name = nullptr);
+    void Init(const char* suffix = nullptr, const char* ini_name = nullptr, const char* cmd_arg = nullptr);
 
     const char* Program_Path();
     const char* Data_Path();
