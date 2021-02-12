@@ -210,14 +210,14 @@ int main(int argc, char** argv)
     /*
     **	Remember the current working directory and drive.
     */
+    PathsClass::Instance().Init("vanillatd", "CONQUER.INI", argv[0]);
+    CDFileClass::Refresh_Search_Drives();
     vc_chdir(PathsClass::Instance().Program_Path());
 
     if (Parse_Command_Line(argc, argv)) {
 
         WinTimerClass::Init(60);
 
-        PathsClass::Instance().Init("vanillatd", "CONQUER.INI");
-        CDFileClass::Refresh_Search_Drives();
         CCFileClass cfile("CONQUER.INI");
 
         Keyboard = new WWKeyboardClass();

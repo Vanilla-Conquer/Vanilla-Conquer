@@ -271,6 +271,8 @@ int main(int argc, char* argv[])
     /*
     **	Remember the current working directory and drive.
     */
+    PathsClass::Instance().Init("vanillara", CONFIG_FILE_NAME, argv[0]);
+    CDFileClass::Refresh_Search_Drives();
     vc_chdir(PathsClass::Instance().Program_Path());
 
     if (Parse_Command_Line(argc, argv)) {
@@ -292,8 +294,6 @@ int main(int argc, char* argv[])
         // end of change - 7/18/2019 JAS
         ////////////////////////////////////////
 #else
-        PathsClass::Instance().Init("vanillara", CONFIG_FILE_NAME);
-        CDFileClass::Refresh_Search_Drives();
         CCFileClass cfile(CONFIG_FILE_NAME);
 #endif
 
