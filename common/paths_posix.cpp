@@ -10,6 +10,7 @@
 // GNU General Public License along with permitted additional restrictions
 // with this program. If not, see https://github.com/electronicarts/CnC_Remastered_Collection
 #include "paths.h"
+#include "debugstring.h"
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -227,10 +228,21 @@ bool PathsClass::Is_Absolute(const char* path)
 
 std::string PathsClass::Argv_Path(const char* cmd_arg)
 {
-    char* real_path = realpath(cmd_arg, nullptr);
-    std::string ret = real_path;
-    ret = ret.substr(0, ret.find_last_of("\\/"));
-    free(real_path);
+    std::string ret(PATH_MAX, '\0');
+    char arg_dir[PATH_MAX];
+    strncpy(arg_dir, cmd_arg, sizeof(arg_dir));
 
+    // remove the executable from path, if any
+    char *dir = strrchr(arg_dir, '/');
+    if (dir != nullptr) {
+        *dir = '\0';
+    }
+
+    if (realpath(arg_dir, &ret[0]) == nullptr) {
+        DBG_WARN("PathsClass::Argv_Path: realpath() failed");
+        ret = arg_dir;
+    } else {
+        ret.resize(strlen(&ret[0]));
+    }
     return ret;
 }
