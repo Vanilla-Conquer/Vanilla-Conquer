@@ -29,7 +29,7 @@ PathsClass& PathsClass::Instance()
     return _instance;
 }
 
-void PathsClass::Init(const char* suffix, const char* ini_name, const char* cmd_arg)
+void PathsClass::Init(const char* suffix, const char* ini_name, const char* data_name, const char* cmd_arg)
 {
     if (suffix != nullptr) {
         Suffix = suffix;
@@ -54,21 +54,35 @@ void PathsClass::Init(const char* suffix, const char* ini_name, const char* cmd_
              DataPath.c_str(),
              UserPath.c_str());
 
+    // Check for a config file to load paths from.
     RawFileClass file;
     bool use_cwd_path = false;
     bool use_program_path = false;
 
-    // Check
-    if (!cwd_path.empty() && RawFileClass((cwd_path + SEP + ini_name).c_str()).Is_Available()) {
-        file.Set_Name((cwd_path + SEP + ini_name).c_str());
-        use_cwd_path = true;
-    } else if (RawFileClass((ProgramPath + SEP + ini_name).c_str()).Is_Available()) {
-        file.Set_Name((ProgramPath + SEP + ini_name).c_str());
-        use_program_path = true;
-    } else if (RawFileClass((UserPath + SEP + ini_name).c_str()).Is_Available()) {
-        file.Set_Name((UserPath + SEP + ini_name).c_str());
-    } else if (RawFileClass((DataPath + SEP + ini_name).c_str()).Is_Available()) {
-        file.Set_Name((DataPath + SEP + ini_name).c_str());
+    if (ini_name != nullptr) {
+        if (!cwd_path.empty() && RawFileClass((cwd_path + SEP + ini_name).c_str()).Is_Available()) {
+            file.Set_Name((cwd_path + SEP + ini_name).c_str());
+            use_cwd_path = true;
+        } else if (RawFileClass((ProgramPath + SEP + ini_name).c_str()).Is_Available()) {
+            file.Set_Name((ProgramPath + SEP + ini_name).c_str());
+            use_program_path = true;
+        } else if (RawFileClass((UserPath + SEP + ini_name).c_str()).Is_Available()) {
+            file.Set_Name((UserPath + SEP + ini_name).c_str());
+        } else if (RawFileClass((DataPath + SEP + ini_name).c_str()).Is_Available()) {
+            file.Set_Name((DataPath + SEP + ini_name).c_str());
+        }
+    }
+
+    // Next we check if the data path is either the argv or program path.
+    bool have_cwd_data = false;
+    bool have_prog_data = false;
+
+    if (data_name != nullptr) {
+        if (!cwd_path.empty() && RawFileClass((cwd_path + SEP + data_name).c_str()).Is_Available()) {
+            have_cwd_data = true;
+        } else if (RawFileClass((ProgramPath + SEP + data_name).c_str()).Is_Available()) {
+            have_prog_data = true;
+        }
     }
 
     INIClass ini;
@@ -81,9 +95,9 @@ void PathsClass::Init(const char* suffix, const char* ini_name, const char* cmd_
     // If not, assume we are in portable mode and point the DataPath to ProgramPath.
     if (ini.Get_String(section, "DataPath", "", buffer, sizeof(buffer)) < sizeof(buffer) && buffer[0] != '\0') {
         DataPath = buffer;
-    } else if (use_cwd_path) {
+    } else if (have_cwd_data) {
         DataPath = cwd_path;
-    } else if (use_program_path) {
+    } else if (have_prog_data) {
         DataPath = ProgramPath;
     }
 
