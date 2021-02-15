@@ -210,9 +210,9 @@ int main(int argc, char** argv)
     /*
     **	Remember the current working directory and drive.
     */
-    PathsClass::Instance().Init("vanillatd", "CONQUER.INI", argv[0]);
-    CDFileClass::Refresh_Search_Drives();
+    PathsClass::Instance().Init("vanillatd", "CONQUER.INI", "CONQUER.MIX", argv[0]);
     vc_chdir(PathsClass::Instance().Program_Path());
+    CDFileClass::Refresh_Search_Drives();
 
     if (Parse_Command_Line(argc, argv)) {
 
