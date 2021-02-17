@@ -63,6 +63,7 @@ set(COMMON_SRC
     packet.cpp
     palette.cpp
     palettec.cpp
+    paths.cpp
     pipe.cpp
     pk.cpp
     pkpipe.cpp
@@ -98,9 +99,9 @@ set(COMMON_SRC
 )
 
 if (WIN32)
-    list(APPEND COMMON_SRC file_win.cpp)
+    list(APPEND COMMON_SRC file_win.cpp paths_win.cpp)
 else()
-    list(APPEND COMMON_SRC file_posix.cpp)
+    list(APPEND COMMON_SRC file_posix.cpp paths_posix.cpp)
 endif()
 
 set(COMMONR_SRC
@@ -115,6 +116,7 @@ set(COMMONR_SRC
 )
 
 set(COMMONV_SRC
+    crashpad.cpp
     framelimit.cpp
     gbuffer.cpp
     interpal.cpp
@@ -153,12 +155,16 @@ if(DSOUND OR DDRAW)
     list(APPEND VANILLA_LIBS dxguid)
 endif()
 
+if(USE_CRASHPAD)
+    list(APPEND VANILLA_LIBS crashpad_client)
+endif()
+
 file(GLOB_RECURSE COMMON_HEADERS "*.h")
 
 add_library(common STATIC ${COMMON_SRC} ${COMMON_HEADERS})
 target_link_libraries(common PUBLIC ${COMMON_LIBS})
 target_include_directories(common PUBLIC .)
-target_compile_definitions(common PRIVATE FIXIT_FAST_LOAD)
+target_compile_definitions(common PRIVATE FIXIT_FAST_LOAD $<$<CONFIG:Debug>:_DEBUG>)
 # Make build check state of git to check for uncommitted changes.
 add_dependencies(common check_git)
 
@@ -181,5 +187,10 @@ if(BUILD_VANILLATD OR BUILD_VANILLARA)
     endif()
     if(SDL2)
         target_compile_definitions(commonv PUBLIC SDL2_BUILD)
+    endif()
+    if(USE_CRASHPAD)
+        add_dependencies(commonv crashpad_handler)
+        target_include_directories(commonv PRIVATE ${crashpad_git_SOURCE_DIR})
+        message("crashpad_client directory is at ${crashpad_git_SOURCE_DIR}")
     endif()
 endif()
