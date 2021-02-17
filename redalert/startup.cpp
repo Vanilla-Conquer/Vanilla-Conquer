@@ -37,6 +37,7 @@
 #include "function.h"
 #include "language.h"
 #include "settings.h"
+#include "common/crashpad.h"
 #include "common/paths.h"
 
 #include "ipx95.h"
@@ -274,6 +275,7 @@ int main(int argc, char* argv[])
     PathsClass::Instance().Init("vanillara", CONFIG_FILE_NAME, "REDALERT.MIX", argv[0]);
     vc_chdir(PathsClass::Instance().Program_Path());
     CDFileClass::Refresh_Search_Drives();
+    Init_Crash_Handler(CONFIG_FILE_NAME);
 
     if (Parse_Command_Line(argc, argv)) {
 

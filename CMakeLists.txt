@@ -21,6 +21,7 @@ option(DDRAW "Enable DirectDraw video backend. (deprecated)" OFF)
 option(SDL2 "Enable SDL2 video backend." ON)
 option(OPENAL "Enable OpenAL audio backend." ON)
 option(BUILD_TESTS "Build unit tests." OFF)
+option(USE_CRASHPAD "Build CrashPad to use as the crash handler." OFF)
 
 add_feature_info(RemasterTD BUILD_REMASTERTD, "Remastered Tiberian Dawn dll")
 add_feature_info(RemasterRA BUILD_REMASTERRA "Remastered Red Alert dll")
@@ -34,6 +35,7 @@ add_feature_info(DirectDraw DDRAW "DirectDraw video backend (deprecated)")
 add_feature_info(SDL2 SDL2 "SDL2 video backend")
 add_feature_info(OpenAL OPENAL "OpenAL audio backend")
 add_feature_info(Tests BUILD_TESTS "Unit tests")
+add_feature_info(CrashPad USE_CRASHPAD "CrashPad exception handler")
 
 if(NOT BUILD_VANILLATD AND NOT BUILD_VANILLARA)
     set(DSOUND OFF)
@@ -111,6 +113,43 @@ if(OPENAL)
     find_package(OpenAL REQUIRED)
     list(APPEND VANILLA_LIBS OpenAL::OpenAL)
     set(DSOUND OFF)
+endif()
+
+if(USE_CRASHPAD)
+    include(FetchContent)
+
+    FetchContent_Declare(
+        crashpad_cmake
+        GIT_REPOSITORY https://github.com/TheAssemblyArmada/crashpad-cmake.git
+        GIT_TAG        4237fa6c993f275a6ee7f8583502a0c8e2d7b7f4
+    )
+
+    # We don't use FetchContent_MakeAvailable here because we don't want all crashpad targets including, just our dependencies.
+    FetchContent_GetProperties(crashpad_cmake)
+    if(NOT crashpad_cmake_POPULATED)
+        FetchContent_Populate(crashpad_cmake)
+        add_subdirectory(${crashpad_cmake_SOURCE_DIR} ${crashpad_cmake_BINARY_DIR} EXCLUDE_FROM_ALL)
+    endif()
+
+    if(WIN32 OR CMAKE_SYSTEM_NAME STREQUAL "Windows")
+        include(ProductVersion)
+        generate_product_version(
+            CRASHPAD_RC
+            NAME "Vanilla-Conquer Crash Handler"
+            BUNDLE "Vanilla-Conquer"
+            VERSION_MAJOR 1
+            VERSION_MINOR 0
+            COMPANY_NAME "Vanilla-Conquer"
+            COMPANY_COPYRIGHT "Based on code released by Google under the Apache 2.0 license."
+            ORIGINAL_FILENAME "crashpad_handler.exe"
+            RCFILE_PREFIX "CrashPad"
+        )
+
+        target_sources(crashpad_handler PRIVATE ${CRASHPAD_RC})
+    endif()
+
+    set_target_properties(crashpad_handler PROPERTIES OUTPUT_NAME vccrashhandler)
+    list(APPEND VANILLA_DEFS BUILD_WITH_CRASHPAD)
 endif()
 
 add_subdirectory(common)
