@@ -526,14 +526,6 @@ void OptionsClass::Load_Settings(void)
     char workbuf[128];
 
     /*
-    **	Check for and possible enable true object names.
-    */
-    ini.Get_String("Options", "TrueNames", "", workbuf, sizeof(workbuf));
-    if (Obfuscate(workbuf) == PARM_TRUENAME) {
-        Special.IsNamed = true;
-    }
-
-    /*
     **	Enable 6 player games if special flag is detected.
     */
     ini.Get_String("Options", "Players", "", workbuf, sizeof(workbuf));
@@ -550,35 +542,11 @@ void OptionsClass::Load_Settings(void)
     }
 
     /*
-    **	Allow purchase of the helipad separately from the helicopter.
-    */
-    ini.Get_String("Options", "Helipad", "", workbuf, sizeof(workbuf));
-    if (Obfuscate(workbuf) == PARM_HELIPAD) {
-        Special.IsSeparate = true;
-    }
-
-    /*
-    **	Allow the MCV to undeploy rather than sell.
-    */
-    ini.Get_String("Options", "MCV", "", workbuf, sizeof(workbuf));
-    if (Obfuscate(workbuf) == PARM_MCV) {
-        Special.IsMCVDeploy = true;
-    }
-
-    /*
     **	Allow disabling of building bibs so that tigher building packing can occur.
     */
     ini.Get_String("Options", "Bibs", "", workbuf, sizeof(workbuf));
     if (Obfuscate(workbuf) == PARM_BIB) {
         Special.IsRoad = true;
-    }
-
-    /*
-    **	Allow targeting of trees without having to hold down the shift key.
-    */
-    ini.Get_String("Options", "TreeTarget", "", workbuf, sizeof(workbuf));
-    if (Obfuscate(workbuf) == PARM_TREETARGET) {
-        Special.IsTreeTarget = true;
     }
 
     /*
@@ -595,17 +563,6 @@ void OptionsClass::Load_Settings(void)
     ini.Get_String("Options", "Scores", "", workbuf, sizeof(workbuf));
     if (Obfuscate(workbuf) == PARM_SCORE) {
         Special.IsVariation = true;
-    }
-
-    /*
-    **	Smarter self defense logic. Tanks will try to run over adjacent infantry. Buildings
-    **	will automatically return fire if they are fired upon. Infantry will run from an
-    **	incoming explosive (grenade or napalm) or damage that can't be directly addressed.
-    */
-    ini.Get_String("Options", "CombatIQ", "", workbuf, sizeof(workbuf));
-    if (Obfuscate(workbuf) == PARM_IQ) {
-        Special.IsSmartDefense = true;
-        Special.IsScatter = true;
     }
 
     /*
