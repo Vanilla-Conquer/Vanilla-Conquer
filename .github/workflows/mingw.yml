@@ -102,18 +102,21 @@ jobs:
         cp ./build/vanillatd.exe ./build/vanillatd.dbg
         cp ./build/vanillara.exe ./build/vanillara.dbg
         cp ./build/stringtool.exe ./build/stringtool.dbg
+        cp ./build/mixtool.exe ./build/mixtool.dbg
         ${{ steps.vars.outputs.arc_path }}-w64-mingw32-strip --strip-all ./build/vanillatd.exe
         ${{ steps.vars.outputs.arc_path }}-w64-mingw32-strip --strip-all ./build/vanillara.exe
         ${{ steps.vars.outputs.arc_path }}-w64-mingw32-strip --strip-all ./build/stringtool.exe
+        ${{ steps.vars.outputs.arc_path }}-w64-mingw32-strip --strip-all ./build/mixtool.exe
         ${{ steps.vars.outputs.arc_path }}-w64-mingw32-objcopy --add-gnu-debuglink=./build/vanillatd.dbg ./build/vanillatd.exe
         ${{ steps.vars.outputs.arc_path }}-w64-mingw32-objcopy --add-gnu-debuglink=./build/vanillara.dbg ./build/vanillara.exe
         ${{ steps.vars.outputs.arc_path }}-w64-mingw32-objcopy --add-gnu-debuglink=./build/stringtool.dbg ./build/stringtool.exe
+        ${{ steps.vars.outputs.arc_path }}-w64-mingw32-objcopy --add-gnu-debuglink=./build/mixtool.dbg ./build/mixtool.exe
 
     - name: Create archives
       run: |
         mkdir artifact
-        7z a artifact/vanilla-conquer-win-gcc-${{ steps.vars.outputs.arc_path }}-${{ steps.gitinfo.outputs.sha_short }}.zip ./build/vanillatd.exe ./build/vanillara.exe ./build/stringtool.exe /tmp/SDL2-2.0.12/${{ steps.vars.outputs.arc_path }}-w64-mingw32/bin/SDL2.dll /tmp/openal-soft-1.21.0-bin/bin/${{ steps.vars.outputs.oal_path }}/OpenAL32.dll
-        7z a artifact/vanilla-conquer-win-gcc-${{ steps.vars.outputs.arc_path }}-${{ steps.gitinfo.outputs.sha_short }}-debug.zip ./build/vanillatd.dbg ./build/vanillara.dbg
+        7z a artifact/vanilla-conquer-win-gcc-${{ steps.vars.outputs.arc_path }}-${{ steps.gitinfo.outputs.sha_short }}.zip ./build/vanillatd.exe ./build/vanillara.exe ./build/stringtool.exe ./build/mixtool.exe /tmp/SDL2-2.0.12/${{ steps.vars.outputs.arc_path }}-w64-mingw32/bin/SDL2.dll /tmp/openal-soft-1.21.0-bin/bin/${{ steps.vars.outputs.oal_path }}/OpenAL32.dll
+        7z a artifact/vanilla-conquer-win-gcc-${{ steps.vars.outputs.arc_path }}-${{ steps.gitinfo.outputs.sha_short }}-debug.zip ./build/vanillatd.dbg ./build/vanillara.dbg ./build/stringtool.dbg ./build/mixtool.dbg
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2

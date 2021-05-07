@@ -139,8 +139,8 @@ jobs:
       shell: bash
       run: |
         mkdir artifact
-        7z a artifact/vanilla-conquer-win-msvc-${{ steps.vars.outputs.arc_path }}-${{ steps.gitinfo.outputs.sha_short }}.zip ./build/vanillatd.exe ./build/vanillara.exe ./build/stringtool.exe $TEMP/SDL2-2.0.12/lib/${{ steps.vars.outputs.sdl_path }}/SDL2.dll $TEMP/openal-soft-1.21.0-bin/bin/${{ steps.vars.outputs.oal_path }}/OpenAL32.dll
-        7z a artifact/vanilla-conquer-win-msvc-${{ steps.vars.outputs.arc_path }}-${{ steps.gitinfo.outputs.sha_short }}-debug.zip ./build/vanillatd.pdb ./build/vanillara.pdb ./build/stringtool.pdb
+        7z a artifact/vanilla-conquer-win-msvc-${{ steps.vars.outputs.arc_path }}-${{ steps.gitinfo.outputs.sha_short }}.zip ./build/vanillatd.exe ./build/vanillara.exe ./build/stringtool.exe ./build/mixtool.exe $TEMP/SDL2-2.0.12/lib/${{ steps.vars.outputs.sdl_path }}/SDL2.dll $TEMP/openal-soft-1.21.0-bin/bin/${{ steps.vars.outputs.oal_path }}/OpenAL32.dll
+        7z a artifact/vanilla-conquer-win-msvc-${{ steps.vars.outputs.arc_path }}-${{ steps.gitinfo.outputs.sha_short }}-debug.zip ./build/vanillatd.pdb ./build/vanillara.pdb ./build/stringtool.pdb ./build/mixtool.pdb
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2

@@ -70,12 +70,15 @@ jobs:
         cp ./build/vanillatd ./build/vanillatd.dbg
         cp ./build/vanillara ./build/vanillara.dbg
         cp ./build/stringtool ./build/stringtool.dbg
+        cp ./build/mixtool ./build/mixtool.dbg
         strip --strip-all ./build/vanillatd
         strip --strip-all ./build/vanillara
         strip --strip-all ./build/stringtool
+        strip --strip-all ./build/mixtool
         objcopy --add-gnu-debuglink=./build/vanillatd.dbg ./build/vanillatd
         objcopy --add-gnu-debuglink=./build/vanillara.dbg ./build/vanillara
         objcopy --add-gnu-debuglink=./build/stringtool.dbg ./build/stringtool
+        objcopy --add-gnu-debuglink=./build/mixtool.dbg ./build/mixtool
 
     - name: Run unit tests
       run: |
@@ -85,8 +88,8 @@ jobs:
     - name: Create archives
       run: |
         mkdir artifact
-        7z a artifact/vanilla-conquer-linux-${{ matrix.platform }}-x86_64-${{ steps.gitinfo.outputs.sha_short }}.zip ./build/vanillatd ./build/vanillara ./build/stringtool
-        7z a artifact/vanilla-conquer-linux-${{ matrix.platform }}-x86_64-${{ steps.gitinfo.outputs.sha_short }}-debug.zip ./build/vanillatd.dbg ./build/vanillara.dbg ./build/stringtool.dbg
+        7z a artifact/vanilla-conquer-linux-${{ matrix.platform }}-x86_64-${{ steps.gitinfo.outputs.sha_short }}.zip ./build/vanillatd ./build/vanillara ./build/stringtool ./build/mixtool
+        7z a artifact/vanilla-conquer-linux-${{ matrix.platform }}-x86_64-${{ steps.gitinfo.outputs.sha_short }}-debug.zip ./build/vanillatd.dbg ./build/vanillara.dbg ./build/stringtool.dbg ./build/mixtool.dbg
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
