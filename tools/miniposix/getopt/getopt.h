@@ -58,4 +58,4 @@ int getopt_long_only(int argc, char** argv, const char* shortopts, const option*
 
 #endif /* _WIN32 */
 
-#endif /* WIN32PORTS_GETOPT_H */
+#endif /* MINIPOSIX_GETOPT_H */
