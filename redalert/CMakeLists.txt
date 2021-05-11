@@ -107,7 +107,6 @@ set(REDALERT_SRC
     queue.cpp
     radar.cpp
     radio.cpp
-    ramfile.cpp
     rawolapi.cpp
     reinf.cpp
     rules.cpp

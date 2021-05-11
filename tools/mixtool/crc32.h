@@ -1,6 +1,3 @@
-//
-// Copyright 2020 Electronic Arts Inc.
-//
 // TiberianDawn.DLL and RedAlert.dll and corresponding source code is free
 // software: you can redistribute it and/or modify it under the terms of
 // the GNU General Public License as published by the Free Software Foundation,
@@ -12,14 +9,45 @@
 // distributed with this program. You should have received a copy of the
 // GNU General Public License along with permitted additional restrictions
 // with this program. If not, see https://github.com/electronicarts/CnC_Remastered_Collection
+#ifndef CRC32_H
+#define CRC32_H
 
-#ifndef READLINE_H
-#define READLINE_H
+#include <stdlib.h>
+#include <stdint.h>
 
-class FileClass;
-class Straw;
+class CRC32Engine
+{
+public:
+    CRC32Engine(int32_t initial = 0)
+        : CRC(initial)
+        , Index(0)
+    {
+        StagingBuffer.Composite = 0;
+    }
 
-int Read_Line(FileClass& file, char* buffer, int len, bool& eof);
-int Read_Line(Straw& file, char* buffer, int len, bool& eof);
+    int32_t operator()(const void* buffer, unsigned length = 0);
+    operator int32_t()
+    {
+        return Value();
+    }
+
+private:
+    void operator()(char datnum);
+    int32_t Value();
+    bool Buffer_Needs_Data()
+    {
+        return Index != 0;
+    }
+
+private:
+    int32_t CRC;
+    int Index;
+
+    union
+    {
+        int32_t Composite;
+        int8_t Buffer[4];
+    } StagingBuffer;
+};
 
 #endif

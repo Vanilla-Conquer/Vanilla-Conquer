@@ -1,6 +1,3 @@
-//
-// Copyright 2020 Electronic Arts Inc.
-//
 // TiberianDawn.DLL and RedAlert.dll and corresponding source code is free
 // software: you can redistribute it and/or modify it under the terms of
 // the GNU General Public License as published by the Free Software Foundation,
@@ -12,14 +9,18 @@
 // distributed with this program. You should have received a copy of the
 // GNU General Public License along with permitted additional restrictions
 // with this program. If not, see https://github.com/electronicarts/CnC_Remastered_Collection
+#ifndef GMIXDB_H
+#define GMIXDB_H
 
-#ifndef READLINE_H
-#define READLINE_H
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-class FileClass;
-class Straw;
+extern const char g_mixDB[487450];
+extern const int g_mixDB_length;
 
-int Read_Line(FileClass& file, char* buffer, int len, bool& eof);
-int Read_Line(Straw& file, char* buffer, int len, bool& eof);
+#ifdef __cplusplus
+}
+#endif
 
 #endif
