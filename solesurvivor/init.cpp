@@ -44,6 +44,7 @@
 #include "loaddlg.h"
 #include "common/gitinfo.h"
 #include "listener.h"
+#include "soleclient.h"
 #include "soleglobals.h"
 #include "solehelp.h"
 #include "soleparams.h"
@@ -902,7 +903,7 @@ bool Select_Game(bool fade)
                         ScenPlayer = SCEN_PLAYER_MPLAYER;
                         ScenDir = SCEN_DIR_EAST;
                         srand(time(NULL));
-                        //Scenario = Get_Map(rand());
+                        Scenario = Get_Map();
                         Whom = HOUSE_NEUTRAL;
                         GameToPlay = GAME_SERVER;
                         display = true;
@@ -925,7 +926,22 @@ bool Select_Game(bool fade)
             **	Connect to an online game.
             */
             case SEL_PLAYONLINE:
-                selection = SEL_NONE;
+                Read_MultiPlayer_Settings();
+                if (Connect_To_Host(SoleHost)) {
+                    if (Wait_For_WDT_Connection()) {
+                        GameToPlay = GAME_CLIENT;
+                        selection = SEL_NONE;
+                        process = false;
+                    } else {
+                        Client_Remote_Disconnect();
+                        display = true;
+                        selection = SEL_NONE;
+                    }
+                } else {
+                    WWMessageBox().Process(TXT_CANNOT_INIT_CLIENT);
+                    display = true;
+                    selection = SEL_NONE;
+                }
                 break;
 
             /*
@@ -995,7 +1011,7 @@ bool Select_Game(bool fade)
             ScenPlayer = SCEN_PLAYER_MPLAYER;
             ScenDir = SCEN_DIR_EAST;
             srand(time(NULL));
-            // Scenario = Get_Map(rand());
+            Scenario = Get_Map();
             Whom = HOUSE_NEUTRAL;
         }
     }
@@ -1934,7 +1950,7 @@ int Version_Number(void)
         snprintf(VersionText, sizeof(VersionText), "%s %s%s", GitTag, (GitUncommittedChanges ? "~" : ""), GitShortSHA1);
     }
 
-    return (1);
+    return (0x105);
 }
 
 /***********************************************************************************************
