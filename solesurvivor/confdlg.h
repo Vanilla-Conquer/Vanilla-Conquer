@@ -13,28 +13,42 @@
 // GNU General Public License along with permitted additional restrictions
 // with this program. If not, see https://github.com/electronicarts/CnC_Remastered_Collection
 
+/* $Header:   F:\projects\c&c\vcs\code\confdlg.h_v   2.18   16 Oct 1995 16:46:06   JOE_BOSTIC  $ */
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
  *                 Project Name : Command & Conquer                                            *
  *                                                                                             *
- *                     $Archive:: /Sun/_WSProto.h                                             $*
+ *                    File Name : CONFDLG.H                                                    *
  *                                                                                             *
- *                      $Author:: Joe_b                                                       $*
+ *                   Programmer : Maria del Mar McCready Legg											  *
+ *											 Joe L. Bostic                                                *
  *                                                                                             *
- *                     $Modtime:: 8/06/97 12:39p                                              $*
+ *                   Start Date : Jan 30, 1995                                                 *
  *                                                                                             *
- *                    $Revision:: 3                                                           $*
+ *                  Last Update : Jan 30, 1995   [MML]                                         *
  *                                                                                             *
- *---------------------------------------------------------------------------------------------*
- * Functions:                                                                                  *
- * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+ *---------------------------------------------------------------------------------------------*/
 
-#ifndef _WSPROTO_H
-#define _WSPROTO_H
+#ifndef CONFDLG_H
+#define CONFDLG_H
 
-class WinsockInterfaceClass;
-extern WinsockInterfaceClass* PacketTransport; // The object for interfacing with Winsock
+#include "gadget.h"
 
-#endif //_WSPROTO_H
+class ConfirmationClass
+{
+private:
+    enum ConfirmationClassEnum
+    {
+        BUTTON_YES = 1, // Button number for "Options menu"
+        BUTTON_NO,      // Button number for "Options menu"
+    };
+
+public:
+    ConfirmationClass(void){};
+    bool Process(char const* string);
+    bool Process(int text);
+};
+
+#endif

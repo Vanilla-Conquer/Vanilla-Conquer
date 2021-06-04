@@ -13,40 +13,78 @@
 // GNU General Public License along with permitted additional restrictions
 // with this program. If not, see https://github.com/electronicarts/CnC_Remastered_Collection
 
+/* $Header:   F:\projects\c&c\vcs\code\scroll.h_v   2.16   16 Oct 1995 16:46:12   JOE_BOSTIC  $ */
 /***********************************************************************************************
  ***              C O N F I D E N T I A L  ---  W E S T W O O D  S T U D I O S               ***
  ***********************************************************************************************
  *                                                                                             *
  *                 Project Name : Command & Conquer                                            *
  *                                                                                             *
- *                     $Archive:: /Sun/Internet.h                                             $*
+ *                    File Name : SCROLL.H                                                     *
  *                                                                                             *
- *                      $Author:: Joe_b                                                       $*
+ *                   Programmer : Joe L. Bostic                                                *
  *                                                                                             *
- *                     $Modtime:: 8/05/97 6:45p                                               $*
+ *                   Start Date : 11/18/94                                                     *
  *                                                                                             *
- *                    $Revision:: 7                                                           $*
+ *                  Last Update : November 18, 1994 [JLB]                                      *
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#ifndef INTERNET_H
-#define INTERNET_H
+#ifndef SCROLL_H
+#define SCROLL_H
 
-#define IP_ADDRESS_MAX 40
+#include "help.h"
 
-void Register_Game_Start_Time(void);
-void Register_Game_End_Time(void);
-void Send_Statistics_Packet(void);
-void Check_From_WChat(char* wchat_name);
-bool Do_The_Internet_Menu_Thang(void);
-bool Server_Remote_Connect(void);
-bool Client_Remote_Connect(void);
-int Read_Game_Options(char* name);
+class ScrollClass : public HelpClass
+{
+    /*
+    **	If map scrolling is automatic, then this flag is true. Automatic scrolling will
+    **	cause the map to scroll if the mouse is in the scroll region, regardless of
+    **	whether or not the mouse button is held down.
+    */
+    unsigned IsAutoScroll : 1;
 
-extern char PlanetWestwoodIPAddress[IP_ADDRESS_MAX];
-extern unsigned short PlanetWestwoodPortNumber;
-extern bool PlanetWestwoodIsHost;
+    /*
+    **	Scroll speed is regulated by this count down timer. When this value reaches zero,
+    **	scroll the map in the direction required and reset this timer.
+    */
+    static CountDownTimerClass Counter;
+
+    /*
+    **	These are the delays used (as countdown timers) to regulate the scroll rate
+    **	of the map. These times are based on game ticks.
+    */
+    //		enum ScrollClassEnums {
+    //			INITIAL_DELAY=8,				// Delay before scrolling can start at all.
+    //			SEQUENCE_DELAY=4				// Delay between scroll steps.
+    //		};
+
+    int Inertia;
+
+public:
+    ScrollClass(void);
+    ScrollClass(NoInitClass const& x)
+        : HelpClass(x){};
+    virtual ~ScrollClass()
+    {
+    }
+
+    bool Set_Autoscroll(int control);
+
+    virtual void AI(KeyNumType& input, int x, int y);
+    virtual void Init_IO(void)
+    {
+        Counter.Set(0);
+        HelpClass::Init_IO();
+    };
+
+    /*
+    **	File I/O.
+    */
+    virtual void Code_Pointers(void);
+    virtual void Decode_Pointers(void);
+};
 
 #endif

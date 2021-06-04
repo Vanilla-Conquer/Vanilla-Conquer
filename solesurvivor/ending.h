@@ -19,18 +19,21 @@
  *                                                                                             *
  *                 Project Name : Command & Conquer                                            *
  *                                                                                             *
- *                     $Archive:: /Sun/_WSProto.cpp                                           $*
+ *                    File Name : ENDING.H                                                     *
  *                                                                                             *
- *                      $Author:: Joe_b                                                       $*
+ *                   Programmer : Barry W. Green                                               *
  *                                                                                             *
- *                     $Modtime:: 8/06/97 12:47p                                              $*
+ *                   Start Date : July 10, 1995                                                *
  *                                                                                             *
- *                    $Revision:: 2                                                           $*
+ *                  Last Update : July 10, 1995 [BWG]                                          *
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "_wsproto.h"
+#ifndef ENDING_H
+#define ENDING_H
 
-WinsockInterfaceClass* PacketTransport = 0; // The object for interfacing with Winsock
+void Nod_Ending(void);
+
+#endif
