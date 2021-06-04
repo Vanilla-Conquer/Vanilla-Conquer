@@ -35,6 +35,9 @@
 #ifndef INFANTRY_H
 #define INFANTRY_H
 
+#include "soleglobals.h"
+#include "solepackets.h"
+
 /**********************************************************************
 **	Infantry can be afraid. These defines are for the various infantry
 **	fear levels. When infantry be come scared enough they take cover and
@@ -246,6 +249,28 @@ public:
     */
     int Validate(void) const;
 
+    static void Set_Allow_New(bool allowed)
+    {
+        AllowNew = allowed;
+    }
+
+    static bool Allow_New()
+    {
+        return AllowNew;
+    }
+
+    static void Set_Allow_Delete(bool allowed)
+    {
+        AllowDelete = allowed;
+    }
+
+    virtual bool Allow_Delete()
+    {
+        return AllowDelete;
+    }
+
+    virtual void Destruct();
+
     /*
     **	Translation table to convert facing into infantry shape number. This special
     **	table is needed since several facing stages are reused and flipped about the Y
@@ -261,6 +286,9 @@ private:
     *save/load
     */
     unsigned char SaveLoadPadding[32];
+
+    static bool AllowNew;
+    static bool AllowDelete;
 };
 
 #endif
