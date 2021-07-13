@@ -3994,7 +3994,7 @@ void InfantryClass::Movement_AI(void)
             /*
             **	Scatter infantry off buildings in guard modes.
             */
-            if (!IsTethered && (Mission == MISSION_GUARD || Mission == MISSION_GUARD_AREA)
+            if (IsActive && !IsTethered && (Mission == MISSION_GUARD || Mission == MISSION_GUARD_AREA)
                 && MissionQueue == MISSION_NONE && Map[Coord].Cell_Building() != NULL) {
                 Scatter(0, true, true);
             }
