@@ -1,6 +1,3 @@
-//
-// Copyright 2020 Electronic Arts Inc.
-//
 // TiberianDawn.DLL and RedAlert.dll and corresponding source code is free
 // software: you can redistribute it and/or modify it under the terms of
 // the GNU General Public License as published by the Free Software Foundation,
@@ -12,14 +9,35 @@
 // distributed with this program. You should have received a copy of the
 // GNU General Public License along with permitted additional restrictions
 // with this program. If not, see https://github.com/electronicarts/CnC_Remastered_Collection
+#ifndef STRINI_H
+#define STRINI_H
 
-#ifndef READLINE_H
-#define READLINE_H
+#include "ini.h"
 
-class FileClass;
-class Straw;
+#define STRINI_MAX_BUF_SIZE 4096
 
-int Read_Line(FileClass& file, char* buffer, int len, bool& eof);
-int Read_Line(Straw& file, char* buffer, int len, bool& eof);
+class StrINIClass : public INIClass
+{
+    struct LangMap
+    {
+        const char *lang;
+        int code;
+    };
+
+public:
+    StrINIClass() {}
+    virtual ~StrINIClass() {}
+
+    int Load(Straw &straw);
+
+    bool Put_Table_String(const char *section, const char *entry, const char *string, const char *lang = nullptr);
+    int Get_Table_String(const char *section, const char *entry, const char *defvalue = "", char *buffer = nullptr,
+        int length = 0, const char *lang = nullptr) const;
+
+private:
+    static int Get_Lang_Code(const char *lang);
+    static char *Codepage_To_UTF8(const char *string, int codepage);
+    static char *UTF8_To_Codepage(const char *string, int codepage);
+};
 
 #endif
