@@ -1556,7 +1556,7 @@ static void Play_Intro(bool for_real)
 #else
     bool playright = !Keyboard->Down(KN_LCTRL) || !Keyboard->Down(KN_RCTRL);
     static int _counter = -1;
-    static char* _names[] = {
+    static const char* _names[] = {
 #ifdef DEMO
         "LOGO",
 

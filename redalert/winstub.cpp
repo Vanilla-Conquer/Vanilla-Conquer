@@ -600,7 +600,7 @@ bool Any_Locked()
  *    4/17/96 9:58AM ST : Created                                                              *
  *=============================================================================================*/
 
-void Assert_Failure(char* expression, int line, char* file)
+void Assert_Failure(const char* expression, int line, const char* file)
 {
     char assertbuf[256];
     char timebuff[512];
@@ -694,7 +694,7 @@ void Memory_Error_Handler(void)
 }
 
 #include "filepcx.h"
-void Load_Title_Screen(char* name, GraphicViewPortClass* video_page, unsigned char* palette)
+void Load_Title_Screen(const char* name, GraphicViewPortClass* video_page, unsigned char* palette)
 {
 
     GraphicBufferClass* load_buffer;

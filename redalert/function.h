@@ -138,7 +138,7 @@ extern void Fatal(char const* message, ...);
 #ifdef assert
 #undef assert
 #endif // assert
-void Assert_Failure(char* expression, int line, char* file);
+void Assert_Failure(const char* expression, int line, const char* file);
 
 #ifdef NDEBUG
 #define assert(__ignore) ((void)0)
@@ -633,7 +633,7 @@ ArmorType Armor_From_Name(char const* name);
 /*
 ** Winstub.cpp
 */
-void Load_Title_Screen(char* name, GraphicViewPortClass* video_page, unsigned char* palette);
+void Load_Title_Screen(const char* name, GraphicViewPortClass* video_page, unsigned char* palette);
 
 /*
 ** Egos.CPP
