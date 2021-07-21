@@ -19,22 +19,39 @@
  *                                                                                             *
  *                 Project Name : Command & Conquer                                            *
  *                                                                                             *
- *                     $Archive:: /Sun/_WSProto.h                                             $*
+ *                     $Archive:: /Sun/Internet.h                                             $*
  *                                                                                             *
  *                      $Author:: Joe_b                                                       $*
  *                                                                                             *
- *                     $Modtime:: 8/06/97 12:39p                                              $*
+ *                     $Modtime:: 8/05/97 6:45p                                               $*
  *                                                                                             *
- *                    $Revision:: 3                                                           $*
+ *                    $Revision:: 7                                                           $*
  *                                                                                             *
  *---------------------------------------------------------------------------------------------*
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#ifndef _WSPROTO_H
-#define _WSPROTO_H
+#ifndef INTERNET_H
+#define INTERNET_H
 
-class WinsockInterfaceClass;
-extern WinsockInterfaceClass* PacketTransport; // The object for interfacing with Winsock
+#define IP_ADDRESS_MAX 40
 
-#endif //_WSPROTO_H
+void Register_Game_Start_Time(void);
+void Register_Game_End_Time(void);
+void Send_Statistics_Packet(void);
+void Check_From_WChat(char* wchat_name);
+bool Do_The_Internet_Menu_Thang(void);
+bool Server_Remote_Connect(void);
+bool Client_Remote_Connect(void);
+int Read_Game_Options(char* name);
+
+extern char PlanetWestwoodIPAddress[IP_ADDRESS_MAX];
+extern unsigned short PlanetWestwoodPortNumber;
+extern bool PlanetWestwoodIsHost;
+extern bool ConnectionLost;
+extern unsigned PlanetWestwoodGameID;
+extern unsigned PlanetWestwoodStartTime;
+extern char PlanetWestwoodHandle[];   // Planet WW user name
+extern char PlanetWestwoodPassword[]; // Planet WW password
+
+#endif
