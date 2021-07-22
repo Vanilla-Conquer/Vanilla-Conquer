@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.14)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 include(FeatureSummary)
@@ -113,9 +113,24 @@ if(OPENAL)
     set(DSOUND OFF)
 endif()
 
+# Use these for the install destinations.
+include(GNUInstallDirs)
+
 add_subdirectory(common)
 add_subdirectory(tiberiandawn)
 add_subdirectory(redalert)
+
+if(BUILD_VANILLATD OR BUILD_VANILLARA)
+    if(WIN32)
+        install(FILES ${OPENAL_RUNTIME_LIBRARY} ${SDL2_RUNTIME_LIBRARY}
+            DESTINATION ${CMAKE_INSTALL_BINDIR}
+            COMPONENT RuntimeDeps
+        )
+    endif()
+
+    include(CPackConfig)
+endif()
+
 
 feature_summary(WHAT ENABLED_FEATURES DESCRIPTION "Enabled features:")
 feature_summary(WHAT DISABLED_FEATURES DESCRIPTION "Disabled features:")
