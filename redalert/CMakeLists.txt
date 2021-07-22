@@ -268,4 +268,9 @@ if(BUILD_VANILLARA)
     if(WIN32 AND NOT MSVC)
         set_target_properties(VanillaRA PROPERTIES LINK_FLAGS "-mwindows")
     endif()
+
+    install(TARGETS VanillaRA
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        COMPONENT VanillaRA
+    )
 endif()

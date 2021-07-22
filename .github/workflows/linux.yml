@@ -73,6 +73,7 @@ jobs:
         strip --strip-all ./build/vanillara
         objcopy --add-gnu-debuglink=./build/vanillatd.dbg ./build/vanillatd
         objcopy --add-gnu-debuglink=./build/vanillara.dbg ./build/vanillara
+        cmake --build build --target package -- -j 4
 
     - name: Run unit tests
       run: |
@@ -84,6 +85,7 @@ jobs:
         mkdir artifact
         7z a artifact/vanilla-conquer-linux-${{ matrix.platform }}-x86_64-${{ steps.gitinfo.outputs.sha_short }}.zip ./build/vanillatd ./build/vanillara
         7z a artifact/vanilla-conquer-linux-${{ matrix.platform }}-x86_64-${{ steps.gitinfo.outputs.sha_short }}-debug.zip ./build/vanillatd.dbg ./build/vanillara.dbg
+        cp ./build/*.deb artifact/
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2

@@ -230,4 +230,9 @@ if(BUILD_VANILLATD)
     if(WIN32 AND NOT MSVC)
         set_target_properties(VanillaTD PROPERTIES LINK_FLAGS "-mwindows")
     endif()
+
+    install(TARGETS VanillaTD
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        COMPONENT VanillaTD
+    )
 endif()
